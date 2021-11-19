@@ -1,0 +1,25 @@
+.main {
+    display: flex;
+    padding-top: 10%;
+    align-items:center;
+    justify-content: center;
+}
+form {
+    border: 1px solid rgb(19, 17, 17);
+    
+}
+.main > .login {
+    margin-right: 50px;
+    padding: 20px;
+}
+
+.main > .register {
+    padding: 20px;
+}
+
+.hi {
+    display: flex;
+    padding-top: 10%;
+    align-items:center;
+    justify-content: center;
+}

@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-
+import './ErrorMSG'
+import ErrorMSG from './ErrorMSG'
 const loginUser = async (credentials) => {
   const res = fetch('http://localhost:8000/api/login', {
     method: 'POST',
@@ -15,6 +16,7 @@ const loginUser = async (credentials) => {
 const Login = ({ setToken }) => {
   const [username, setUsername] = useState()
   const [password, setPassword] = useState()
+  const [errorMSG, setErrorMSG] = useState()
   const handleSubmit = async (e) => {
     e.preventDefault()
 
@@ -24,32 +26,40 @@ const Login = ({ setToken }) => {
       password: password
     })
     const token = await loginUser(formBody)
-    console.log(token)
-    setToken(token)
+    if (!token.ok) {
+      setErrorMSG('Invalid Credentials !!!')
+    } else {
+      // sessionStorage.setItem('token', token.json)
+      console.log(token.body)
+      setToken(token)
+    }
   }
   return (
-    <form onSubmit={handleSubmit} class="box">
-      <label>
-        <p>username</p>
+    <form onSubmit={handleSubmit} class="login">
+      <h1>Login</h1>
+      <div class="mb-3">
+        <label class="form-label">username</label>
         <input
           type="text"
           class="form-control"
           onChange={(e) => setUsername(e.target.value)}
         />
-      </label>
-      <label>
-        <p>password</p>
+      </div>
+
+      <div class="mb-3">
+        <label class="label">password</label>
         <input
           type="password"
           class="form-control"
           onChange={(e) => setPassword(e.target.value)}
         />
-      </label>
+      </div>
       <div>
         <button type="submit" class="btn btn-primary">
           Log in
         </button>
       </div>
+      <ErrorMSG msg={errorMSG} />
     </form>
   )
 }
