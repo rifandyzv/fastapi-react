@@ -1,0 +1,39 @@
+version: '3.7'
+services:
+  db-mariadb:
+    image: mariadb:focal
+    container_name: mariadb
+    ports:
+      - "8080:3306"
+    environment:
+      - MYSQL_DATABASE = user
+      - MYSQL_USER = admin
+      - MYSQL_PASSWORD = admin
+      - MYSQL_ROOT_PASSWORD=123
+    networks:
+      - tst-docker
+    volumes:
+      - /var/docker/mariadb/conf:/etc/mysql
+
+  backend-fast-api:
+    image: fast-api:2.1
+    container_name: fast-api
+    ports:
+      - "8000:8000"
+    networks:
+      - tst-docker
+    depends_on:
+      - mariadb
+
+  frontend-react-nginx:
+    image: react-app:1.0
+    ports:
+      - "80:80"
+    networks:
+      - tst-docker
+    depends_on:
+      - backend-fast-api
+
+networks: 
+  tst-docker:
+    name: tst-docker
