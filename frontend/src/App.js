@@ -6,7 +6,6 @@ import Username from './components/Username'
 //   sessionStorage.setItem('token', JSON.stringify(userToken))
 // }
 // const getToken = () => {}
-
 function App() {
   const [token, setToken] = useState()
   // const token = getToken()
@@ -23,23 +22,33 @@ function App() {
   }
 
   const getUser = async () => {
-    return fetch('http://localhost:8000/api/me', {
+    const res = await fetch('http://localhost:8000/api/me', {
       method: 'GET',
       headers: {
-        Authorization:
-          'Bearer ' +
-          'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImFzZCIsInBhc3N3b3JkIjoiJDJiJDEyJEhETGRYbE8vbVhqRHJHaVR0b20vQy4vb2hERzBmS2lidGVpUEFLRG1OazdQYnRnZWoyZGdLIn0.1kz5Jrpc0XIcNls4Cy5jz7qpXqzY5r-fbjdyxd0Kiqs'
+        Authorization: 'Bearer ' + sessionStorage.getItem('token')
       }
-    }).then((data) => {
-      data.json()
     })
+      .then((data) => {
+        return data.json()
+      })
+      .then((e) => {
+        setUser(e.username)
+      })
   }
-
+  getUser()
   return (
     <div class="hi">
       <div>
         <Username name={user} />
-        <button class="btn btn-secondary">Log out</button>
+
+        <button
+          class="btn btn-secondary"
+          onClick={() => {
+            setToken(null)
+          }}
+        >
+          Log out
+        </button>
       </div>
     </div>
   )

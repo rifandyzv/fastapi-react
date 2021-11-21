@@ -9,6 +9,13 @@ const loginUser = async (credentials) => {
     },
     body: credentials
   })
+    .then((data) => {
+      return data.json()
+    })
+    .then((j) => {
+      const x = j
+      return x.access_token
+    })
 
   return await res
 }
@@ -26,14 +33,16 @@ const Login = ({ setToken }) => {
       password: password
     })
     const token = await loginUser(formBody)
-    if (!token.ok) {
+    console.log(token)
+    if (!token) {
       setErrorMSG('Invalid Credentials !!!')
     } else {
       // sessionStorage.setItem('token', token.json)
-      console.log(token.body)
+      sessionStorage.setItem('token', token)
       setToken(token)
     }
   }
+
   return (
     <form onSubmit={handleSubmit} class="login">
       <h1>Login</h1>
