@@ -16,14 +16,14 @@ services:
       - /var/docker/mariadb/conf:/etc/mysql
 
   backend-fast-api:
-    image: fast-api:2.1
+    image: fast-api:3.0
     container_name: fast-api
     ports:
       - "8000:8000"
     networks:
       - tst-docker
     depends_on:
-      - mariadb
+      - db-mariadb
 
   frontend-react-nginx:
     image: react-app:1.0
